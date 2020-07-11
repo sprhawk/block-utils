@@ -595,7 +595,7 @@ pub fn format_block_device(device: &Path, filesystem: &Filesystem, force: bool) 
 
             arg_list.push(device.to_string_lossy().to_string());
             // Check if mkfs.btrfs is installed
-            if !Path::new("/sbin/mkfs.btrfs").exists() {
+            if !Path::new("/usr/bin/mkfs.btrfs").exists() {
                 return Err(BlockUtilsError::new(
                     "Please install btrfs-tools".to_string(),
                 ));
