@@ -571,7 +571,7 @@ pub fn erase_block_device(device: &Path) -> BlockResult<()> {
 /// Synchronous utility to format a block device with a given filesystem.
 /// Note: ZFS creation can be slow because there's potentially several commands that need to
 /// be run.  async_format_block_device will be faster if you have many block devices to format
-pub fn format_block_device(device: &Path, filesystem: &Filesystem) -> BlockResult<i32> {
+pub fn format_block_device(device: &Path, filesystem: &Filesystem, force: bool) -> BlockResult<i32> {
     match *filesystem {
         Filesystem::Btrfs {
             ref metadata_profile,
@@ -579,6 +579,10 @@ pub fn format_block_device(device: &Path, filesystem: &Filesystem) -> BlockResul
             ref node_size,
         } => {
             let mut arg_list: Vec<String> = Vec::new();
+
+            if force {
+                arg_list.push("-f".to_string());
+            }
 
             arg_list.push("-m".to_string());
             arg_list.push(metadata_profile.clone().to_string());
